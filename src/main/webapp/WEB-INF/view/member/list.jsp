@@ -28,9 +28,16 @@
                 </thead>
                 <tbody>
                 <c:forEach items="${memberList}" var="member">
+                    <c:url var="memberLink" value="/member">
+                        <c:param name="id" value="${member.id}"/>
+                    </c:url>
                     <tr>
                         <td>${member.id}</td>
-                        <td>${member.email}</td>
+                        <td>
+                            <a href="${memberLink}">
+                                    ${member.email}
+                            </a>
+                        </td>
                         <td>${member.password}</td>
                         <td>${member.nickName}</td>
                         <td>${member.inserted}</td>
