@@ -30,4 +30,24 @@ public class MemberService {
     public void remove(Integer id) {
         mapper.remove(id);
     }
+
+    public void modify(Member member) {
+        mapper.modify(member);
+    }
+
+    public String emailCheck(String email) {
+        Member member = mapper.selectByEmail(email);
+        if (member == null) {
+            // 사용 가능한 이메일
+            return "사용 가능한 이메일입니다.";
+        } else {
+            // 이미 존재하는 이메일
+            return "사용 불가능한 이메일 입니다.";
+        }
+    }
+
+    public int nickNameCheck(String nickName) {
+        return mapper.nickNameCheck(nickName);
+
+    }
 }

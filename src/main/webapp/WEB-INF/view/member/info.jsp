@@ -43,6 +43,7 @@
                 </div>
 
                 <div>
+                    <button class="btn btn-secondary" form="formModify">수정</button>
                     <button class="btn btn-danger" form="formDelete">삭제</button>
                 </div>
             </div>
@@ -53,6 +54,9 @@
 </div>
 
 <div>
+    <form action="/member/modify" id="formModify">
+        <input type="hidden" name="id" value="${member.id}">
+    </form>
     <form action="/member/remove" id="formDelete" method="post" onsubmit="return confirm('탈퇴 하시겠습니까?')">
         <input type="hidden" name="id" value="${member.id}">
     </form>
