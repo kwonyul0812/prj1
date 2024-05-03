@@ -32,3 +32,17 @@ ALTER TABLE member
 
 SELECT *
 FROM member;
+
+# 페이징용..( 게시물 복사해서 갯수 늘리기 )
+INSERT INTO board
+    (title, content, writer)
+SELECT title, content, writer
+FROM board;
+
+SELECT COUNT(*)
+FROM board;
+
+DELETE
+FROM board
+WHERE id > 875;
+
