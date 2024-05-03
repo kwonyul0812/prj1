@@ -21,7 +21,7 @@
                 <tr>
                     <th>#</th>
                     <th>이메일</th>
-                    <th>암호</th>
+                    <%--                    <th>암호</th>--%>
                     <th>별명</th>
                     <th>가입일시</th>
                 </tr>
@@ -38,7 +38,7 @@
                                     ${member.email}
                             </a>
                         </td>
-                        <td>${member.password}</td>
+                            <%--                        <td>${member.password}</td>--%>
                         <td>${member.nickName}</td>
                         <td>${member.inserted}</td>
                     </tr>

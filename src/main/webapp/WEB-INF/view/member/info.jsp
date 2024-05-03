@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -27,7 +28,7 @@
                     <label for="inputPassword" class="form-label">
                         비밀번호
                     </label>
-                    <input id="inputPassword" type="text" value="${member.password}" readonly class="form-control">
+                    <input id="inputPassword" type="password" value="${member.password}" readonly class="form-control">
                 </div>
                 <div class="mb-3">
                     <label for="inputNickName" class="form-label">
@@ -42,10 +43,15 @@
                     <input id="inputInserted" type="text" value="${member.inserted}" readonly class="form-control">
                 </div>
 
-                <div>
-                    <button class="btn btn-secondary" form="formModify">수정</button>
-                    <button class="btn btn-danger" form="formDelete">삭제</button>
-                </div>
+                <sec:authorize access="isAuthenticated()">
+                    <sec:authentication property="principal.member" var="authMember"/>
+                    <c:if test="${authMember.id == member.id}">
+                        <div>
+                            <button class="btn btn-secondary" form="formModify">수정</button>
+                            <button class="btn btn-danger" form="formDelete">삭제</button>
+                        </div>
+                    </c:if>
+                </sec:authorize>
             </div>
 
 
@@ -53,14 +59,19 @@
     </div>
 </div>
 
-<div>
-    <form action="/member/modify" id="formModify">
-        <input type="hidden" name="id" value="${member.id}">
-    </form>
-    <form action="/member/remove" id="formDelete" method="post" onsubmit="return confirm('탈퇴 하시겠습니까?')">
-        <input type="hidden" name="id" value="${member.id}">
-    </form>
-</div>
+<sec:authorize access="isAuthenticated()">
+    <sec:authentication property="principal.member" var="authMember"/>
+    <c:if test="${authMember.id eq member.id}">
+        <div>
+            <form action="/member/modify" id="formModify">
+                <input type="hidden" name="id" value="${member.id}">
+            </form>
+            <form action="/member/remove" id="formDelete" method="post" onsubmit="return confirm('탈퇴 하시겠습니까?')">
+                <input type="hidden" name="id" value="${member.id}">
+            </form>
+        </div>
+    </c:if>
+</sec:authorize>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"
         integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ=="

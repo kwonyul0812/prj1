@@ -15,32 +15,30 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-6">
-
-            <h3 class="mb-4">새 게시물 작성</h3>
-
-            <form action="/add" method="post">
-                <div class="mb-3">
-                    <label for="inputTitle" class="form-label">
-                        제목
-                    </label>
-                    <input id="inputTitle" class="form-control" type="text" name="title" required>
-                </div>
-                <div class="mb-3">
-                    <label for="textareaContent" class="form-label">
-                        본문
-                    </label>
-                    <textarea id="textareaContent" class="form-control" name="content" cols="30" rows="10"
-                              required></textarea>
-                </div>
-                
-                <div class="mb-3">
-                    <button class="btn btn-primary">저장</button>
-                </div>
-            </form>
-
+            <h3 class="mb-4">로그인</h3>
+            <div>
+                <form action="/member/login" method="post">
+                    <div class="mb-3">
+                        <label for="inputEmail" class="form-label">
+                            이메일
+                        </label>
+                        <input type="email" name="username" id="inputEmail" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="inputPassword" class="form-label">
+                            암호
+                        </label>
+                        <input type="password" name="password" id="inputPassword" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <button class="btn btn-primary">로그인</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"
         integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ=="

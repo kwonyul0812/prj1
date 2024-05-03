@@ -1,8 +1,12 @@
 package com.prj1.service;
 
+import com.prj1.domain.CustomUser;
 import com.prj1.domain.Member;
+import com.prj1.mapper.BoardMapper;
 import com.prj1.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,8 +18,12 @@ import java.util.List;
 public class MemberService {
 
     private final MemberMapper mapper;
+    private final BoardMapper boardMapper;
+    private final BCryptPasswordEncoder encoder;
 
     public void signup(Member member) {
+        member.setPassword(encoder.encode(member.getPassword()));
+
         mapper.insert(member);
     }
 
@@ -28,10 +36,20 @@ public class MemberService {
     }
 
     public void remove(Integer id) {
+        // board 테이블에서 레코드 삭제
+        boardMapper.deleteBoardByMemberId(id);
+
+        // member 테이블에서 레코드 삭제
         mapper.remove(id);
     }
 
     public void modify(Member member) {
+        if (member.getPassword() != null && member.getPassword().length() > 0) {
+            member.setPassword(encoder.encode(member.getPassword()));
+        } else {
+            Member old = mapper.selectById(member.getId());
+            member.setPassword(old.getPassword());
+        }
         mapper.modify(member);
     }
 
@@ -49,5 +67,16 @@ public class MemberService {
     public int nickNameCheck(String nickName) {
         return mapper.nickNameCheck(nickName);
 
+    }
+
+    public boolean hasAccess(Integer id, Authentication authentication) {
+        if (authentication == null) return false;
+
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof CustomUser user) {
+            Member member = user.getMember();
+            return member.getId().equals(id);
+        }
+        return false;
     }
 }

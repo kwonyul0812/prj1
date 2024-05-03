@@ -1,8 +1,11 @@
 package com.prj1.service;
 
 import com.prj1.domain.Board;
+import com.prj1.domain.CustomUser;
+import com.prj1.domain.Member;
 import com.prj1.mapper.BoardMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,8 +19,13 @@ public class BoardService {
 
     private final BoardMapper mapper;
 
-    public void add(Board board) {
-        mapper.insert(board);
+    public void add(Board board, Authentication authentication) {
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof CustomUser user) {
+            Member member = user.getMember();
+            board.setMemberId(member.getId());
+            mapper.insert(board);
+        }
     }
 
     public Board get(Integer id) {
@@ -46,10 +54,32 @@ public class BoardService {
 
         endPageNumber = Math.min(endPageNumber, lastPageNumber);
 
+        int prevPageNumber = beginPageNumber - 10;
+        int nextPageNumber = beginPageNumber + 10;
+
         return Map.of("boardList", mapper.selectAllByPage(offset),
                 "pageInfo", Map.of("lastPageNumber", lastPageNumber,
                         "endPageNumber", endPageNumber,
-                        "beginPageNumber", beginPageNumber));
+                        "beginPageNumber", beginPageNumber,
+                        "prevPageNumber", prevPageNumber,
+                        "nextPageNumber", nextPageNumber,
+                        "currentPageNumber", page));
 
+    }
+
+    public boolean hasAccess(Integer id, Authentication authentication) {
+        if (authentication == null) {
+            return false;
+        }
+
+        Board board = mapper.selectById(id);
+
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof CustomUser user) {
+            Member member = user.getMember();
+
+            return board.getMemberId().equals(member.getId());
+        }
+        return false;
     }
 }

@@ -46,3 +46,21 @@ DELETE
 FROM board
 WHERE id > 875;
 
+# board 테이블 수정
+# writer 컬럼 지우기
+# member_id INT REFERENCES member(id) 컬럼 추가
+
+ALTER TABLE board
+    DROP COLUMN writer;
+ALTER TABLE board
+    ADD COLUMN member_id INT REFERENCES member (id);
+
+UPDATE board
+SET member_id = 20
+WHERE id > 0;
+
+SELECT *
+FROM board;
+SELECT *
+FROM member;
+

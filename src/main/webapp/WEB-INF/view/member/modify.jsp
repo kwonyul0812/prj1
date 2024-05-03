@@ -27,18 +27,21 @@
                 </div>
                 <div class="mb-3">
                     <label for="inputPassword" class="form-label">
-                        패스워드
+                        암호
                     </label>
-                    <input oninput="passwordCheck()" id="inputPassword" type="text" name="password"
-                           value="${member.password}"
+                    <input oninput="passwordCheck()" id="inputPassword" type="password" name="password"
+                           value=""
                            class="form-control">
+                    <div class="form-text">
+                        암호를 입력하지 않으면 기존 암호로 유지됩니다.
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="inputPasswordCheck" class="form-label">
-                        패스워드 확인
+                        암호 확인
                     </label>
-                    <input oninput="passwordCheck()" id="inputPasswordCheck" type="text"
-                           value="${member.password}"
+                    <input oninput="passwordCheck()" id="inputPasswordCheck" type="password"
+                           value=""
                            class="form-control">
                     <div class="form-text" id="passwordMessage"></div>
                 </div>
